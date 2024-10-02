@@ -38,9 +38,37 @@ class User
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'publisher')]
     private Collection $comments;
 
+    /**
+     * @var Collection<int, SubscriptionHistory>
+     */
+    #[ORM\OneToMany(targetEntity: SubscriptionHistory::class, mappedBy: 'userId')]
+    private Collection $subscriptionId;
+
+    /**
+     * @var Collection<int, PlaylistSubscription>
+     */
+    #[ORM\OneToMany(targetEntity: PlaylistSubscription::class, mappedBy: 'userId')]
+    private Collection $userPlaylist;
+
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'userId')]
+    private Collection $commentList;
+
+    /**
+     * @var Collection<int, WatchHistory>
+     */
+    #[ORM\OneToMany(targetEntity: WatchHistory::class, mappedBy: 'userId')]
+    private Collection $lastHistory;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->subscriptionId = new ArrayCollection();
+        $this->userPlaylist = new ArrayCollection();
+        $this->commentList = new ArrayCollection();
+        $this->lastHistory = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,6 +160,126 @@ class User
             // set the owning side to null (unless already changed)
             if ($comment->getPublisher() === $this) {
                 $comment->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SubscriptionHistory>
+     */
+    public function getSubscriptionId(): Collection
+    {
+        return $this->subscriptionId;
+    }
+
+    public function addSubscriptionId(SubscriptionHistory $subscriptionId): static
+    {
+        if (!$this->subscriptionId->contains($subscriptionId)) {
+            $this->subscriptionId->add($subscriptionId);
+            $subscriptionId->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscriptionId(SubscriptionHistory $subscriptionId): static
+    {
+        if ($this->subscriptionId->removeElement($subscriptionId)) {
+            // set the owning side to null (unless already changed)
+            if ($subscriptionId->getUserId() === $this) {
+                $subscriptionId->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PlaylistSubscription>
+     */
+    public function getUserPlaylist(): Collection
+    {
+        return $this->userPlaylist;
+    }
+
+    public function addUserPlaylist(PlaylistSubscription $userPlaylist): static
+    {
+        if (!$this->userPlaylist->contains($userPlaylist)) {
+            $this->userPlaylist->add($userPlaylist);
+            $userPlaylist->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserPlaylist(PlaylistSubscription $userPlaylist): static
+    {
+        if ($this->userPlaylist->removeElement($userPlaylist)) {
+            // set the owning side to null (unless already changed)
+            if ($userPlaylist->getUserId() === $this) {
+                $userPlaylist->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getCommentList(): Collection
+    {
+        return $this->commentList;
+    }
+
+    public function addCommentList(Comment $commentList): static
+    {
+        if (!$this->commentList->contains($commentList)) {
+            $this->commentList->add($commentList);
+            $commentList->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentList(Comment $commentList): static
+    {
+        if ($this->commentList->removeElement($commentList)) {
+            // set the owning side to null (unless already changed)
+            if ($commentList->getUserId() === $this) {
+                $commentList->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WatchHistory>
+     */
+    public function getLastHistory(): Collection
+    {
+        return $this->lastHistory;
+    }
+
+    public function addLastHistory(WatchHistory $lastHistory): static
+    {
+        if (!$this->lastHistory->contains($lastHistory)) {
+            $this->lastHistory->add($lastHistory);
+            $lastHistory->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLastHistory(WatchHistory $lastHistory): static
+    {
+        if ($this->lastHistory->removeElement($lastHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($lastHistory->getUserId() === $this) {
+                $lastHistory->setUserId(null);
             }
         }
 

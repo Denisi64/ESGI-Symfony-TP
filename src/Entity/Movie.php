@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\MovieRepository;
+use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
 
-#[ORM\Entity(repositoryClass: MovieRepository::class)]
-class Movie
+#[Entity(repositoryClass: MediaRepository::class)]
+class Movie extends Media
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

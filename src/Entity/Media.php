@@ -4,10 +4,19 @@ namespace App\Entity;
 
 use App\Enum\MediaTypeEnum;
 use App\Repository\MediaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\InheritanceType;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
+#[InheritanceType('JOINED')]
+#[DiscriminatorColumn(name: 'discr', type: 'string')]
+#[DiscriminatorMap(['serie' => Serie::class, 'movie' => Movie::class])]
 class Media
 {
     #[ORM\Id]
@@ -38,6 +47,45 @@ class Media
 
     #[ORM\Column]
     private array $casting = [];
+
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'mediaId')]
+    private Collection $commentList;
+
+    /**
+     * @var Collection<int, PlaylistMedia>
+     */
+    #[ORM\ManyToMany(targetEntity: PlaylistMedia::class, mappedBy: 'mediaId')]
+    private Collection $mediaPlaylist;
+
+    /**
+     * @var Collection<int, WatchHistory>
+     */
+    #[ORM\OneToMany(targetEntity: WatchHistory::class, mappedBy: 'mediaId')]
+    private Collection $watchHistories;
+
+    /**
+     * @var Collection<int, Categorie>
+     */
+    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'mediaList')]
+    private Collection $categorieMedia;
+
+    /**
+     * @var Collection<int, Language>
+     */
+    #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'mediaList')]
+    private Collection $mediaLanguage;
+
+    public function __construct()
+    {
+        $this->commentList = new ArrayCollection();
+        $this->mediaPlaylist = new ArrayCollection();
+        $this->watchHistories = new ArrayCollection();
+        $this->categorieMedia = new ArrayCollection();
+        $this->mediaLanguage = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +184,141 @@ class Media
     public function setCasting(array $casting): static
     {
         $this->casting = $casting;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getCommentList(): Collection
+    {
+        return $this->commentList;
+    }
+
+    public function addCommentList(Comment $commentList): static
+    {
+        if (!$this->commentList->contains($commentList)) {
+            $this->commentList->add($commentList);
+            $commentList->setMediaId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentList(Comment $commentList): static
+    {
+        if ($this->commentList->removeElement($commentList)) {
+            // set the owning side to null (unless already changed)
+            if ($commentList->getMediaId() === $this) {
+                $commentList->setMediaId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PlaylistMedia>
+     */
+    public function getMediaPlaylist(): Collection
+    {
+        return $this->mediaPlaylist;
+    }
+
+    public function addMediaPlaylist(PlaylistMedia $mediaPlaylist): static
+    {
+        if (!$this->mediaPlaylist->contains($mediaPlaylist)) {
+            $this->mediaPlaylist->add($mediaPlaylist);
+            $mediaPlaylist->addMediaId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaPlaylist(PlaylistMedia $mediaPlaylist): static
+    {
+        if ($this->mediaPlaylist->removeElement($mediaPlaylist)) {
+            $mediaPlaylist->removeMediaId($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WatchHistory>
+     */
+    public function getWatchHistories(): Collection
+    {
+        return $this->watchHistories;
+    }
+
+    public function addWatchHistory(WatchHistory $watchHistory): static
+    {
+        if (!$this->watchHistories->contains($watchHistory)) {
+            $this->watchHistories->add($watchHistory);
+            $watchHistory->setMediaId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWatchHistory(WatchHistory $watchHistory): static
+    {
+        if ($this->watchHistories->removeElement($watchHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($watchHistory->getMediaId() === $this) {
+                $watchHistory->setMediaId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Categorie>
+     */
+    public function getCategorieMedia(): Collection
+    {
+        return $this->categorieMedia;
+    }
+
+    public function addCategorieMedium(Categorie $categorieMedium): static
+    {
+        if (!$this->categorieMedia->contains($categorieMedium)) {
+            $this->categorieMedia->add($categorieMedium);
+        }
+
+        return $this;
+    }
+
+    public function removeCategorieMedium(Categorie $categorieMedium): static
+    {
+        $this->categorieMedia->removeElement($categorieMedium);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Language>
+     */
+    public function getMediaLanguage(): Collection
+    {
+        return $this->mediaLanguage;
+    }
+
+    public function addMediaLanguage(Language $mediaLanguage): static
+    {
+        if (!$this->mediaLanguage->contains($mediaLanguage)) {
+            $this->mediaLanguage->add($mediaLanguage);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaLanguage(Language $mediaLanguage): static
+    {
+        $this->mediaLanguage->removeElement($mediaLanguage);
 
         return $this;
     }

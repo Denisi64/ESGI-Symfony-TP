@@ -1,9 +1,9 @@
 version: '3.8'
-
 services:
-  # Service pour le serveur PHP (Symfony)
   app:
-    image: php:8.2-fpm  # Utiliser PHP 8.2
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: symfony_app
     working_dir: /var/www/symfony
     volumes:
@@ -12,9 +12,12 @@ services:
       - PHP_INI_DIR=/usr/local/etc/php
       - XDEBUG_MODE=debug
       - XDEBUG_CONFIG="client_host=host.docker.internal"
+      - UID=${UID:-1000}
+      - GID=${GID:-1000}
+    user: "${UID}:${GID}"
     networks:
       - symfony_network
-
+  # Other services...
   # Service pour Nginx
   nginx:
     image: nginx:alpine
