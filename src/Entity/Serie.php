@@ -6,16 +6,10 @@ use App\Repository\MediaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
 
-#[Entity(repositoryClass: MediaRepository::class)]
+#[ORM\Entity(repositoryClass: MediaRepository::class)]
 class Serie extends Media
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     /**
      * @var Collection<int, Season>
      */
@@ -25,11 +19,6 @@ class Serie extends Media
     public function __construct()
     {
         $this->seasonList = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**

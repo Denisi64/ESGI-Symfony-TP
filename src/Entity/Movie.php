@@ -9,13 +9,7 @@ use Doctrine\ORM\Mapping\Entity;
 #[Entity(repositoryClass: MediaRepository::class)]
 class Movie extends Media
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    // Plus besoin de redéclarer le champ id ici
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    // Les autres propriétés et méthodes de Movie
 }
