@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\PlaylistMediaRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaylistMediaRepository::class)]
@@ -18,20 +16,13 @@ class PlaylistMedia
     #[ORM\Column]
     private ?\DateTimeImmutable $addedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'playlistMedia')]
+    #[ORM\ManyToOne(inversedBy: 'playlistMedia')] // La relation vers Playlist
     #[ORM\JoinColumn(nullable: false)]
-    private ?Playlist $playlistId = null;
+    private ?Playlist $playlist = null;
 
-    /**
-     * @var Collection<int, Media>
-     */
-    #[ORM\ManyToMany(targetEntity: Media::class, inversedBy: 'mediaPlaylist')]
-    private Collection $mediaId;
-
-    public function __construct()
-    {
-        $this->mediaId = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'mediaPlaylist')] // La relation vers Media
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Media $media = null;
 
     public function getId(): ?int
     {
@@ -46,43 +37,28 @@ class PlaylistMedia
     public function setAddedAt(\DateTimeImmutable $addedAt): static
     {
         $this->addedAt = $addedAt;
-
         return $this;
     }
 
-    public function getPlaylistId(): ?Playlist
+    public function getPlaylist(): ?Playlist
     {
-        return $this->playlistId;
+        return $this->playlist;
     }
 
-    public function setPlaylistId(?Playlist $playlistId): static
+    public function setPlaylist(?Playlist $playlist): static
     {
-        $this->playlistId = $playlistId;
-
+        $this->playlist = $playlist;
         return $this;
     }
 
-    /**
-     * @return Collection<int, Media>
-     */
-    public function getMediaId(): Collection
+    public function getMedia(): ?Media
     {
-        return $this->mediaId;
+        return $this->media;
     }
 
-    public function addMediaId(Media $mediaId): static
+    public function setMedia(?Media $media): static
     {
-        if (!$this->mediaId->contains($mediaId)) {
-            $this->mediaId->add($mediaId);
-        }
-
-        return $this;
-    }
-
-    public function removeMediaId(Media $mediaId): static
-    {
-        $this->mediaId->removeElement($mediaId);
-
+        $this->media = $media;
         return $this;
     }
 }

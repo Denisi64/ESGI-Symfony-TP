@@ -15,14 +15,17 @@ class Subscription
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column]
     private ?int $price = null;
 
     #[ORM\Column]
-    private ?int $durationInMonth = null;
+    private ?int $duration = null; // Durée en mois, par exemple
+
+    #[ORM\Column]
+    private ?int $durationInMonth = null; // Nouvelle propriété ajoutée
 
     /**
      * @var Collection<int, User>
@@ -33,7 +36,7 @@ class Subscription
     /**
      * @var Collection<int, SubscriptionHistory>
      */
-    #[ORM\OneToMany(targetEntity: SubscriptionHistory::class, mappedBy: 'subscriptionId')]
+    #[ORM\OneToMany(targetEntity: SubscriptionHistory::class, mappedBy: 'subscription')]
     private Collection $subscriptionHistories;
 
     public function __construct()
@@ -55,7 +58,6 @@ class Subscription
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -67,10 +69,21 @@ class Subscription
     public function setPrice(int $price): static
     {
         $this->price = $price;
-
         return $this;
     }
 
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): static
+    {
+        $this->duration = $duration;
+        return $this;
+    }
+
+    // Méthodes pour la nouvelle propriété durationInMonth
     public function getDurationInMonth(): ?int
     {
         return $this->durationInMonth;
@@ -79,7 +92,6 @@ class Subscription
     public function setDurationInMonth(int $durationInMonth): static
     {
         $this->durationInMonth = $durationInMonth;
-
         return $this;
     }
 
@@ -125,7 +137,7 @@ class Subscription
     {
         if (!$this->subscriptionHistories->contains($subscriptionHistory)) {
             $this->subscriptionHistories->add($subscriptionHistory);
-            $subscriptionHistory->setSubscriptionId($this);
+            $subscriptionHistory->setSubscription($this);
         }
 
         return $this;
@@ -135,8 +147,8 @@ class Subscription
     {
         if ($this->subscriptionHistories->removeElement($subscriptionHistory)) {
             // set the owning side to null (unless already changed)
-            if ($subscriptionHistory->getSubscriptionId() === $this) {
-                $subscriptionHistory->setSubscriptionId(null);
+            if ($subscriptionHistory->getSubscription() === $this) {
+                $subscriptionHistory->setSubscription(null);
             }
         }
 

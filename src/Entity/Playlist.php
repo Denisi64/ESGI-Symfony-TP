@@ -27,14 +27,17 @@ class Playlist
     /**
      * @var Collection<int, PlaylistSubscription>
      */
-    #[ORM\OneToMany(targetEntity: PlaylistSubscription::class, mappedBy: 'playlistId')]
+    #[ORM\OneToMany(targetEntity: PlaylistSubscription::class, mappedBy: 'playlist')]
     private Collection $playlistSubscriptions;
 
     /**
      * @var Collection<int, PlaylistMedia>
      */
-    #[ORM\OneToMany(targetEntity: PlaylistMedia::class, mappedBy: 'playlistId')]
+    #[ORM\OneToMany(targetEntity: PlaylistMedia::class, mappedBy: 'playlist')]
     private Collection $playlistMedia;
+
+    #[ORM\ManyToOne]
+    private ?User $creator = null;
 
     public function __construct()
     {
@@ -95,7 +98,7 @@ class Playlist
     {
         if (!$this->playlistSubscriptions->contains($playlistSubscription)) {
             $this->playlistSubscriptions->add($playlistSubscription);
-            $playlistSubscription->setPlaylistId($this);
+            $playlistSubscription->setPlaylist($this); // Utiliser setPlaylist
         }
 
         return $this;
@@ -104,9 +107,8 @@ class Playlist
     public function removePlaylistSubscription(PlaylistSubscription $playlistSubscription): static
     {
         if ($this->playlistSubscriptions->removeElement($playlistSubscription)) {
-            // set the owning side to null (unless already changed)
-            if ($playlistSubscription->getPlaylistId() === $this) {
-                $playlistSubscription->setPlaylistId(null);
+            if ($playlistSubscription->getPlaylist() === $this) {
+                $playlistSubscription->setPlaylist(null);
             }
         }
 
@@ -125,7 +127,7 @@ class Playlist
     {
         if (!$this->playlistMedia->contains($playlistMedium)) {
             $this->playlistMedia->add($playlistMedium);
-            $playlistMedium->setPlaylistId($this);
+            $playlistMedium->setPlaylist($this); // Utiliser setPlaylist
         }
 
         return $this;
@@ -134,11 +136,22 @@ class Playlist
     public function removePlaylistMedium(PlaylistMedia $playlistMedium): static
     {
         if ($this->playlistMedia->removeElement($playlistMedium)) {
-            // set the owning side to null (unless already changed)
-            if ($playlistMedium->getPlaylistId() === $this) {
-                $playlistMedium->setPlaylistId(null);
+            if ($playlistMedium->getPlaylist() === $this) {
+                $playlistMedium->setPlaylist(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?User $creator): static
+    {
+        $this->creator = $creator;
 
         return $this;
     }
