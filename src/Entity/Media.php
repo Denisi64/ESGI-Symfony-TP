@@ -87,6 +87,7 @@ class Media
         $this->mediaLanguage = new ArrayCollection();
     }
 
+    // Getters and setters...
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +105,12 @@ class Media
         return $this;
     }
 
+    public function setMediaLanguage(Collection $mediaLanguage): static
+    {
+        $this->mediaLanguage = $mediaLanguage;
+
+        return $this;
+    }
     public function getTitle(): ?string
     {
         return $this->title;
