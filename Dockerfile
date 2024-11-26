@@ -1,17 +1,22 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
-# Installer les extensions nécessaires, y compris pdo_pgsql pour PostgreSQL
+# Install necessary dependencies and extensions
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    curl \
-    unzip \
-    && docker-php-ext-install pdo pdo_mysql pdo_pgsql
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Installer Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copier le contenu de l'application
-COPY . /var/www/symfony
-
-# Définir le répertoire de travail
+# Set working directory
 WORKDIR /var/www/symfony
+
+# Copy application files
+COPY . .
+
+# Install application dependencies
+RUN composer install
+
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]
