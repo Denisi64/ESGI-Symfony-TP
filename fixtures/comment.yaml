@@ -1,0 +1,7 @@
+App\Entity\Comment:
+  comment_{1..100}:
+    content: "Ceci est le commentaire numéro <current()>."
+    publisher: '@user_<numberBetween(1,100)>'
+    media: '@movie_<numberBetween(1,100)>'
+    status: '<randomElement(["approved", "pending", "rejected"])>'
+    parentComment: null
