@@ -1,0 +1,21 @@
+App\Entity\Subscription:
+  subscription_basic:
+    name: 'Basic'
+    price: 0
+    duration: 1
+    durationInMonth: 1
+  subscription_standard:
+    name: 'Standard'
+    price: 9.99
+    duration: 1
+    durationInMonth: 1
+  subscription_premium:
+    name: 'Premium'
+    price: 14.99
+    duration: 1
+    durationInMonth: 1
+  subscription_family:
+    name: 'Family'
+    price: 19.99
+    duration: 1
+    durationInMonth: 1
