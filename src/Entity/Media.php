@@ -63,7 +63,7 @@ class Media
     /**
      * @var Collection<int, WatchHistory>
      */
-    #[ORM\OneToMany(targetEntity: WatchHistory::class, mappedBy: 'mediaId')]
+    #[ORM\OneToMany(mappedBy: 'mediaId', targetEntity: WatchHistory::class)]
     private Collection $watchHistories;
 
     /**

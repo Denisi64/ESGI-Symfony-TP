@@ -23,8 +23,11 @@ class WatchHistory
     #[ORM\ManyToOne(inversedBy: 'lastHistory')]
     private ?User $userId = null;
 
-    #[ORM\ManyToOne(inversedBy: 'watchHistories')]
+    #[ORM\ManyToOne(targetEntity: Media::class, inversedBy: 'watchHistories')]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id')]
     private ?Media $mediaId = null;
+
+
 
     public function getId(): ?int
     {
