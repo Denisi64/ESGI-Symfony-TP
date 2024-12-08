@@ -1,0 +1,5 @@
+hautelook_alice:
+    fixtures_path: 'fixtures'
+    locale: fr_FR
+    seed: 1
+    persist_once: false

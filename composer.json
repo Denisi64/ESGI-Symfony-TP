@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": "^8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^3",
@@ -32,10 +32,10 @@
         "sort-packages": true
     },
     "autoload": {
-            "psr-4": {
-                "App\\": "src/",
-                "DoctrineMigrations\\": "migrations/"
-            }
+        "psr-4": {
+            "App\\": "src/",
+            "DoctrineMigrations\\": "migrations/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
