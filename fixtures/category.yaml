@@ -1,0 +1,16 @@
+App\Entity\Categorie:
+  adventure_category:
+    name: 'Adventure'
+    label: 'Aventure'
+  horror_category:
+    name: 'Horror'
+    label: 'Horreur'
+  fantasy_category:
+    name: 'Fantasy'
+    label: 'Fantasy'
+  mystery_category:
+    name: 'Mystery'
+    label: 'Mystère'
+  sci_fi_category:
+    name: 'Sci-Fi'
+    label: 'Science-fiction'

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route(path: '/hello', name: 'page_hello')]
-    public function accueil()
+    public function accueil(): Response
     {
         return $this->render('index.html.twig');
     }

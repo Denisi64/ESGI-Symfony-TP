@@ -1,9 +1,10 @@
 version: '3.8'
 
 services:
-  # Service pour le serveur PHP (Symfony)
   app:
-    image: php:8.2-fpm  # Utiliser PHP 8.2
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: symfony_app
     working_dir: /var/www/symfony
     volumes:
@@ -12,6 +13,9 @@ services:
       - PHP_INI_DIR=/usr/local/etc/php
       - XDEBUG_MODE=debug
       - XDEBUG_CONFIG="client_host=host.docker.internal"
+      - UID=${UID:-1000}
+      - GID=${GID:-1000}
+    user: "${UID}:${GID}"
     networks:
       - symfony_network
 
@@ -29,43 +33,14 @@ services:
     networks:
       - symfony_network
 
-  # Service pour MySQL
-  db:
-    image: mysql:5.7
-    container_name: symfony_db
-    environment:
-      MYSQL_DATABASE: symfony_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - symfony_network
-
-  # Service pour phpMyAdmin
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: symfony_phpmyadmin
-    environment:
-      PMA_HOST: db
-      PMA_USER: user
-      PMA_PASSWORD: password
-    ports:
-      - "8081:80"
-    depends_on:
-      - db
-    networks:
-      - symfony_network
-
-###> doctrine/doctrine-bundle ###
+  # Service pour PostgreSQL
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
+    container_name: symfony_postgres
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
       POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
       timeout: 5s
@@ -73,18 +48,26 @@ services:
       start_period: 60s
     volumes:
       - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+    networks:
+      - symfony_network
+
+  # Adminer - alternative à phpMyAdmin pour PostgreSQL
+  adminer:
+    image: adminer
+    container_name: symfony_adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: database
+    ports:
+      - "8082:8080"  # Utilisation du port 8082 local pour Adminer
+    depends_on:
+      - database
+    networks:
+      - symfony_network
+
 
 volumes:
-
-###> doctrine/doctrine-bundle ###
   database_data:
-###< doctrine/doctrine-bundle ###
-  db_data:
 
 networks:
   symfony_network:
     driver: bridge
-
