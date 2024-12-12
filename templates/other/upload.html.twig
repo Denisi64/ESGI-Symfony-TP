@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Images</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Gestion des Images</h1>
+
+    <form action="{{ path('upload_photos') }}" method="post" enctype="multipart/form-data" class="mb-8">
+        <label class="block text-lg font-medium mb-2">Ajoutez de nouvelles photos</label>
+        <input type="file" name="photos[]" multiple class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button type="submit" class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">Ajouter les photos</button>
+    </form>
+
+    <h2 class="text-2xl font-bold mb-4">Galerie</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for image in images %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="{{ asset('uploads/' ~ image.filename) }}" alt="{{ image.alt }}" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2">{{ image.title }}</h3>
+                    <p class="text-gray-600">Ajoutée le {{ image.uploadedAt|date('d/m/Y') }}</p>
+                    <form action="{{ path('delete_photo', {id: image.id}) }}" method="post">
+                        <button type="submit" class="mt-4 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <p class="col-span-full text-gray-600">Aucune image disponible.</p>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
