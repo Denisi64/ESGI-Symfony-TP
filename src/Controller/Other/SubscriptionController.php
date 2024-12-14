@@ -11,8 +11,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class SubscriptionController extends AbstractController
 {
     #[Route('/subscriptions', name: 'page_subscription')]
-    public function index(): Response
+    public function index(SubscriptionController $subscriptionList): Response
     {
-        return $this->render('other/abonnements.html.twig');
+        $subscriptions = $subscriptionList->findAll();
+        return $this->render('other/abonnements.html.twig', [
+        'subscriptions' => $subscriptions,
+        ]);
     }
 }

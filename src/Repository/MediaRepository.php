@@ -16,6 +16,14 @@ class MediaRepository extends ServiceEntityRepository
         parent::__construct($registry, Media::class);
     }
 
+    public function findPopular() {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.popularity', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Media[] Returns an array of Media objects
     //     */
