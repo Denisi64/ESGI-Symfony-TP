@@ -64,6 +64,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: WatchHistory::class, mappedBy: 'userId')]
     private Collection $lastHistory;
 
+    #[ORM\Column]
+    private array $roles = [];
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -71,6 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->userPlaylist = new ArrayCollection();
         $this->commentList = new ArrayCollection();
         $this->lastHistory = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
         $this->accountStatus = UserAccountStatusEnum::ACTIVE; // ou une autre valeur par défaut
     }
 
@@ -293,7 +297,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return $this->roles;
     }
 
     public function eraseCredentials(): void
@@ -303,6 +307,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->username;
+        return $this->email;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 }
