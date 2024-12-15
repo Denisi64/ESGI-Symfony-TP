@@ -5,5 +5,5 @@ App\Entity\User:
     email: '<email()>'
   user_admin:
     username: 'admin'
-    password: 'admin'
+    password: '$2y$13$jxJOUS2rjzbiOtckqum6IOaeR8wmGxxciZWF4Oej/zqM8g90FqXkC'
     email: 'superadmin@test.com'

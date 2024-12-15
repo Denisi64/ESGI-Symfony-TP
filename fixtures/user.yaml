@@ -1,13 +1,12 @@
-
 App\Entity\User:
   user_{1..100}:
     username: '<name()>'
     email: '<email()>'
-    password: 'password123'
+    password: '<(password_hash("password123", PASSWORD_BCRYPT))>'
     roles: ['ROLE_USER']
 
   user_admin:
     username: 'admin'
     email: 'superadmin@test.com'
-    password: 'admin'
+    password: '<(password_hash("admin123", PASSWORD_BCRYPT))>'
     roles: ['ROLE_ADMIN']

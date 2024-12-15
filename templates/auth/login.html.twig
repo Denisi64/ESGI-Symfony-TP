@@ -58,6 +58,16 @@
                                         <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Se connecter</button>
                                     </div>
                                 </form>
+
+                                <!-- Lien vers la page de réinitialisation de mot de passe -->
+                                <div class="mt-4 text-center">
+                                    <a href="{{ path('forgot') }}" class="text-blue-600 hover:text-blue-800">Mot de passe oublié ?</a>
+                                </div>
+                                {% if error %}
+                                    <div class="alert alert-danger text-red-600 p-3 border rounded-md">
+                                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
