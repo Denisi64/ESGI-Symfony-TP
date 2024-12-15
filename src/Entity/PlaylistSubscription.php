@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\PlaylistSubscriptionRepository;
@@ -14,51 +13,51 @@ class PlaylistSubscription
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $subscibedAt = null;
+    private ?\DateTimeImmutable $subscribedAt = null; // Corriger l'orthographe
 
-    #[ORM\ManyToOne(inversedBy: 'userPlaylist')]
-    private ?User $userId = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userPlaylist')] // Corriger la propriété inversedBy
+    private ?User $user = null; // Renommer userId en user
 
-    #[ORM\ManyToOne(inversedBy: 'playlistSubscriptions')]
-    private ?Playlist $playlistId = null;
+    #[ORM\ManyToOne(targetEntity: Playlist::class, inversedBy: 'playlistSubscriptions')] // Corriger la propriété inversedBy
+    private ?Playlist $playlist = null; // Renommer playlistId en playlist
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSubscibedAt(): ?\DateTimeImmutable
+    public function getSubscribedAt(): ?\DateTimeImmutable
     {
-        return $this->subscibedAt;
+        return $this->subscribedAt;
     }
 
-    public function setSubscibedAt(\DateTimeImmutable $subscibedAt): static
+    public function setSubscribedAt(\DateTimeImmutable $subscribedAt): static
     {
-        $this->subscibedAt = $subscibedAt;
+        $this->subscribedAt = $subscribedAt;
 
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(?User $userId): static
+    public function setUser(?User $user): static
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getPlaylistId(): ?Playlist
+    public function getPlaylist(): ?Playlist
     {
-        return $this->playlistId;
+        return $this->playlist;
     }
 
-    public function setPlaylistId(?Playlist $playlistId): static
+    public function setPlaylist(?Playlist $playlist): static
     {
-        $this->playlistId = $playlistId;
+        $this->playlist = $playlist;
 
         return $this;
     }

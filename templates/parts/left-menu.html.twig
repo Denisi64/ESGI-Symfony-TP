@@ -69,7 +69,14 @@
             <span>Paramètres</span>
         </a>
         <ul>
-            {% if app.user %}
+
+            {# Afficher le lien vers la page d'administration si l'utilisateur est un administrateur #}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ path('page_admin') }}">Administration</a></li>
+            {% endif %}
+        </ul>
+        <ul>
+            {% if app.user %}t
                 <li><a href="{{ path('_logout_main') }}">Déconnexion</a></li>
             {% else %}
                 <li><a href="{{ path('login') }}">Connexion</a></li>
