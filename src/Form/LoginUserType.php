@@ -1,10 +1,9 @@
 <?php
+// src/Form/LoginUserType.php
 
 namespace App\Form;
 
-use App\Entity\Subscription;
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,15 +13,8 @@ class LoginUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username')
-            ->add('email')
-            ->add('password')
-            ->add('accountStatus')
-            ->add('currentSubscription', EntityType::class, [
-                'class' => Subscription::class,
-                'choice_label' => 'id',
-            ])
-        ;
+            ->add('email') // Email de l'utilisateur
+            ->add('password'); // Mot de passe de l'utilisateur
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -32,3 +24,4 @@ class LoginUserType extends AbstractType
         ]);
     }
 }
+
