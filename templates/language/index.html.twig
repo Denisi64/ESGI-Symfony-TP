@@ -1,0 +1,51 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streemi - Categorie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+{% block title %}Language Index{% endblock %}
+
+{% block body %}
+    <div class="max-w-6xl mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center">Liste des Langues</h1>
+
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead class="bg-blue-600 text-white">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Id</th>
+                <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Nom</th>
+                <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Code</th>
+                <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Actions</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+            {% for language in languages %}
+                <tr class="hover:bg-gray-100">
+                    <td class="px-6 py-4">{{ language.id }}</td>
+                    <td class="px-6 py-4">{{ language.name }}</td>
+                    <td class="px-6 py-4">{{ language.code }}</td>
+                    <td class="px-6 py-4 space-x-4">
+                        <a href="{{ path('app_language_show', {'id': language.id}) }}"
+                           class="text-blue-600 hover:text-blue-800 font-semibold">Voir</a>
+                        <a href="{{ path('app_language_edit', {'id': language.id}) }}"
+                           class="text-yellow-600 hover:text-yellow-800 font-semibold">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="mt-6 text-center">
+            <a href="{{ path('app_language_new') }}"
+               class="inline-block px-6 py-3 bg-green-600 text-white font-bold rounded-md hover:bg-green-700">
+                Créer une nouvelle langue
+            </a>
+        </div>
+    </div>
+{% endblock %}

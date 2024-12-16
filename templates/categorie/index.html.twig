@@ -1,0 +1,52 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../template-html/style/style.css" rel="stylesheet">
+    <title>Streemi - Categorie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+
+{% block body %}
+    <div class="max-w-5xl mx-auto py-8">
+        <h1 class="text-2xl font-bold mb-6">Liste des Catégories</h1>
+
+        <table class="w-full table-auto bg-white shadow-md rounded-lg">
+            <thead class="bg-gray-200">
+            <tr>
+                <th class="px-4 py-2">ID</th>
+                <th class="px-4 py-2">Nom</th>
+                <th class="px-4 py-2">Label</th>
+                <th class="px-4 py-2">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for categorie in categories %}
+                <tr class="border-b">
+                    <td class="px-4 py-2">{{ categorie.id }}</td>
+                    <td class="px-4 py-2">{{ categorie.name }}</td>
+                    <td class="px-4 py-2">{{ categorie.label }}</td>
+                    <td class="px-4 py-2">
+                        <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}"
+                           class="text-blue-600 hover:underline">Modifier</a>
+                        <a href="{{ path('app_categorie_delete', {'id': categorie.id}) }}"
+                           class="text-red-600 hover:underline ml-4">Supprimer</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="px-4 py-2 text-center">Aucune catégorie trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="mt-6">
+            <a href="{{ path('app_categorie_new') }}"
+               class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-800">
+                Ajouter une catégorie
+            </a>
+        </div>
+    </div>
+{% endblock %}
