@@ -1,12 +1,13 @@
+# src/DataFixtures/AppFixtures.yaml
 App\Entity\User:
   user_{1..100}:
     username: '<name()>'
     email: '<email()>'
-    password: '<(password_hash("password123", PASSWORD_BCRYPT))>'
+    password: '<password()>'
     roles: ['ROLE_USER']
 
   user_admin:
     username: 'admin'
     email: 'superadmin@test.com'
-    password: '<(password_hash("admin123", PASSWORD_BCRYPT))>'
+    password: 'admin123'
     roles: ['ROLE_ADMIN']
