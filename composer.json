@@ -10,22 +10,22 @@
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.0",
-        "doctrine/orm": "^3.2",
+        "doctrine/orm": "^3.3",
         "hautelook/alice-bundle": "^2.14",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
         "symfony/flex": "^2",
         "symfony/form": "7.1.*",
         "symfony/framework-bundle": "7.1.*",
+        "symfony/mailer": "^6.0",
         "symfony/monolog-bundle": "^3.10",
         "symfony/runtime": "7.1.*",
         "symfony/security-bundle": "7.1.*",
         "symfony/security-core": "7.1.*",
         "symfony/twig-bundle": "7.1.*",
+        "symfony/uid": "7.1.*",
         "symfony/validator": "7.1.*",
-        "symfony/mailer": "^6.0",
-        "symfony/yaml": "7.1.*",
-        "symfony/uid": "7.1.*"
+        "symfony/yaml": "7.1.*"
     },
     "config": {
         "allow-plugins": {
